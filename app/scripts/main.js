@@ -130,49 +130,49 @@ $(document).ready(function() {
 
     myChart.showLoading();
 
-    echarts.registerMap('taiwan', TwGeoJson);
-    geoJson.features.forEach(function(item) {
-        OO.Data.areaInfo.push({
-            name: item.properties.name,
-            value: 0
-        });
-    });
-
-    infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
-
-    refresh(function() {
-        myChart.hideLoading();
-
-        setInterval(function() {
-            if (!isStopRefresh) {
-                refresh();
-            }
-        }, 10000);
-    });
-
-    // OO.Service.getTaiwanGeojson()
-    //     .then(function(geoJson) {
-    //         echarts.registerMap('taiwan', geoJson);
-
-    //         geoJson.features.forEach(function(item) {
-    //             OO.Data.areaInfo.push({
-    //                 name: item.properties.name,
-    //                 value: 0
-    //             });
-    //         });
-
-    //         infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
-
-    //         refresh(function() {
-    //             myChart.hideLoading();
-
-    //             setInterval(function() {
-    //                 if (!isStopRefresh) {
-    //                     refresh();
-    //                 }
-    //             }, 10000);
-    //         });
-    //     }, function(error) {
-    //         modalComponent.show('Error', 'Ajax request error!');
+    // echarts.registerMap('taiwan', TwGeoJson);
+    // geoJson.features.forEach(function(item) {
+    //     OO.Data.areaInfo.push({
+    //         name: item.properties.name,
+    //         value: 0
     //     });
+    // });
+
+    // infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
+
+    // refresh(function() {
+    //     myChart.hideLoading();
+
+    //     setInterval(function() {
+    //         if (!isStopRefresh) {
+    //             refresh();
+    //         }
+    //     }, 10000);
+    // });
+
+    OO.Service.getTaiwanGeojson()
+        .then(function(geoJson) {
+            echarts.registerMap('taiwan', geoJson);
+
+            geoJson.features.forEach(function(item) {
+                OO.Data.areaInfo.push({
+                    name: item.properties.name,
+                    value: 0
+                });
+            });
+
+            infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
+
+            refresh(function() {
+                myChart.hideLoading();
+
+                setInterval(function() {
+                    if (!isStopRefresh) {
+                        refresh();
+                    }
+                }, 10000);
+            });
+        }, function(error) {
+            modalComponent.show('Error', 'Ajax request error!');
+        });
 });
