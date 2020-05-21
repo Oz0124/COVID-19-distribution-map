@@ -131,7 +131,7 @@ $(document).ready(function() {
     myChart.showLoading();
 
     // echarts.registerMap('taiwan', TwGeoJson);
-    // geoJson.features.forEach(function(item) {
+    // TwGeoJson.features.forEach(function(item) {
     //     OO.Data.areaInfo.push({
     //         name: item.properties.name,
     //         value: 0
