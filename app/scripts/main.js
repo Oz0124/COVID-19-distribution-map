@@ -1,11 +1,19 @@
+OO.Data = OO.Data || {};
+
 // DOM載入完成
 $(document).ready(function() {
+    OO.Data.areaInfo = [];
+
 	let body = d3.select('body');
-	let main = body.select('.main');
-    let myChart = echarts.init(main.node());
+    let mapContainer = body.select('.body-container .main .map');
+    let totalInfoBlock = body.select('.total-diagnose-block .diagnose-value');
+    let infoSwiperContainer = body.select('.info-swiper-container');
+    let myChart = echarts.init(mapContainer.node());
+    let modalComponent = new OO.Modules.ModalComponent({}, body);
+    let isStopRefresh = false;
     let options = {
         title: {
-            text: 'COVID-19 台灣確診人數分布圖',
+            text: '臺灣各縣市確診人數統計',
             subtext: 'Data from 衛生福利部疾病管制署 https://data.cdc.gov.tw/',
             sublink: 'https://data.cdc.gov.tw/dataset/agsdctable-day-19cov'
         },
@@ -15,7 +23,7 @@ $(document).ready(function() {
             transitionDuration: 0.2,
             formatter: function (params) {
                 let value = isNaN(params.value) ? 0 : params.value;
-                return params.seriesName + '<br/>' + params.name + ': ' + value;
+                return params.name + '確診人數: ' + value;
             }
         },
         visualMap: {
@@ -25,18 +33,6 @@ $(document).ready(function() {
             text: ['High', 'Low'],
             calculable: true
         },
-        // toolbox: {
-        //     show: true,
-        //     left: 'right',
-        //     top: 'top',
-        //     feature: {
-        //         dataView: {
-        //             readOnly: false
-        //         },
-        //         restore: {},
-        //         saveAsImage: {}
-        //     }
-        // },
         series: [
             {
                 name: '各地確診人數',
@@ -51,6 +47,35 @@ $(document).ready(function() {
                 data: []
             }
         ]
+    };
+
+    let infoSwiperInit = function(container, list) {
+        let infoSwiperWrapper = container.select('.swiper-wrapper');
+        list.forEach(function(item) {
+            let infoBlock = infoSwiperWrapper.append('div')
+                .classed('swiper-slide info-block', true)
+                .attr('nid', item.name);
+
+            let infoBody = infoBlock.append('div')
+                .classed('info-body', true);
+
+            infoBody.append('div')
+                .classed('title-header', true)
+                .text(item.name + '確診人數');
+
+            infoBody.append('div')
+                .classed('diagnose-value', true)
+                .text(item.value);
+        });
+
+        return new Swiper(container.node(), {
+            spaceBetween: 0,
+            centeredSlides: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false
+            }
+        });
     };
 
     let refresh = function(successCallback) {
@@ -76,14 +101,19 @@ $(document).ready(function() {
                         object.value += count;
                     }
                     else {
-                        seriesData.push({
+                        object = {
                             name: area,
                             value: count
-                        });
+                        };
+                        seriesData.push(object);
                     }
+
+                    infoSwiperContainer
+                        .select('.info-block[nid="' + object.name + '"] .diagnose-value')
+                        .text(object.value);
                 });
 
-                console.log('Total: ' + total);
+                totalInfoBlock.text(total);
 
                 options.series[0].data = seriesData;
                 myChart.setOption(options);
@@ -92,7 +122,8 @@ $(document).ready(function() {
                     successCallback();
                 }
             }, function(error) {
-                console.log('Ajax request 發生錯誤');
+                isStopRefresh = true;
+                modalComponent.show('Error', 'Ajax request error!');
             });
     };
 
@@ -102,10 +133,25 @@ $(document).ready(function() {
         .then(function(geoJson) {
             echarts.registerMap('taiwan', geoJson);
 
+            geoJson.features.forEach(function(item) {
+                OO.Data.areaInfo.push({
+                    name: item.properties.name,
+                    value: 0
+                });
+            });
+
+            infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
+
             refresh(function() {
                 myChart.hideLoading();
+
+                setInterval(function() {
+                    if (!isStopRefresh) {
+                        refresh();
+                    }
+                }, 10000);
             });
         }, function(error) {
-            console.log('Ajax request 發生錯誤');
+            modalComponent.show('Error', 'Ajax request error!');
         });
 });

@@ -4,13 +4,14 @@
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>COVID-19 Map</title>
+        <title>COVID-19 武漢肺炎 - 臺灣確診人數即時數據</title>
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
+        <link rel="stylesheet" href="/bower_components/swiper/package/css/swiper.css" />
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -23,9 +24,36 @@
         <!-- endbuild -->
     </head>
     <body>
-        <div class="main">
+        <nav class="top-nav">
+            <a href="/" class="logo">
+                COVID-19 武漢肺炎 - 臺灣確診人數即時數據
+            </a>
+        </nav>
+        <div class="body-container">
+            <div class="left-block">
+                <div class="info-block total-diagnose-block">
+                    <div class="info-body">
+                        <div class="title-header">
+                            確診總人數
+                        </div>
+                        <div class="diagnose-value">
+                            ---
+                        </div>
+                    </div>
+                </div>
+                <div class="info-swiper-container">
+                    <div class="swiper-wrapper">
 
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="map">
+
+                </div>
+            </div>
         </div>
+
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
@@ -34,6 +62,7 @@
         <script src="/bower_components/d3/d3.js"></script>
         <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <script src="/bower_components/echarts/dist/echarts.js"></script>
+        <script src="/bower_components/swiper/package/js/swiper.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -42,6 +71,8 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/main20180403.js -->
+        <script src="scripts/ModalComponent.js"></script>
+        <script src="scripts/DisplayPanel.js"></script>
         <script src="service/api.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->

@@ -1,18 +1,30 @@
 {
-  "name": "painter",
+  "name": "covid-19-map",
   "private": true,
   "dependencies": {
     "bootstrap-sass": "~3.3.5",
     "modernizr": "~2.8.1",
     "d3": "^5.0.0",
     "bootstrap": "3",
-    "echarts": "^4.7.0"
+    "echarts": "^4.7.0",
+    "swiper": "^5.4.1"
   },
   "overrides": {
     "bootstrap-sass": {
       "main": [
         "assets/stylesheets/_bootstrap.scss",
         "assets/fonts/bootstrap/*"
+      ]
+    },
+    "echarts": {
+      "main": [
+        "dist/echarts.js"
+      ]
+    },
+    "swiper": {
+      "main": [
+        "package/js/swiper.js",
+        "package/css/swiper.css"
       ]
     }
   },

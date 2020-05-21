@@ -2,7 +2,7 @@
 
 This is a javascript COVID-19 Map.
 
-[Demo](https://oz0124.github.io/painter/)
+[Demo](https://oz0124.github.io/COVID-19-distribution-map/)
 
 
 ## Prerequisites
