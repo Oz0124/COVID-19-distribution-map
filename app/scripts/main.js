@@ -1,4 +1,5 @@
 let OO = OO || {};
+OO.Version = 'v2.0.3';
 OO.Data = OO.Data || {};
 
 // DOM載入完成
@@ -87,6 +88,7 @@ $(document).ready(function() {
                 let seriesData = [];
                 let total = 0;
                 let currentDate = new Date();
+                let currentOptions = myChart.getOption();
 
                 refreshTimeBlock
                     .text(d3.timeFormat('%Y/%m/%d %H:%M:%S')(currentDate));
@@ -126,6 +128,11 @@ $(document).ready(function() {
                     .text(total);
 
                 options.series[0].data = seriesData;
+
+                if (currentOptions) {
+                    options.series[0].center = currentOptions.series[0].center;
+                }
+
                 myChart.setOption(options);
 
                 if (successCallback) {
@@ -156,7 +163,7 @@ $(document).ready(function() {
             if (!isStopRefresh) {
                 refresh();
             }
-        }, 10000);
+        }, 5000);
     });
 
     // OO.Service.getTaiwanGeojson()
@@ -184,4 +191,7 @@ $(document).ready(function() {
     //     }, function(error) {
     //         modalComponent.show('Error', 'Ajax request error!');
     //     });
+
+    console.log(OO.Version);
+    console.log('Power by Max Lin');
 });
