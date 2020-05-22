@@ -25,7 +25,7 @@
     </head>
     <body>
         <nav class="top-nav">
-            <a href="/" class="logo">
+            <a href="/COVID-19-distribution-map/" class="logo">
                 COVID-19 武漢肺炎 - 臺灣確診人數即時數據
             </a>
         </nav>
@@ -54,6 +54,10 @@
             </div>
         </div>
 
+        <div class="refresh-time-block">
+            <span>最後更新時間:</span>
+            <span class="time">----</span>
+        </div>
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
@@ -71,6 +75,7 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/main20180403.js -->
+        <script src="map/TwGeoJson.js"></script>
         <script src="scripts/ModalComponent.js"></script>
         <script src="scripts/DisplayPanel.js"></script>
         <script src="scripts/service/api.js"></script>

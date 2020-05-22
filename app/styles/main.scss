@@ -37,6 +37,7 @@ body {
         bottom: 10px;
         left: 10px;
         right: 10px;
+        overflow: auto;
 
         .left-block {
             position: absolute;
@@ -67,7 +68,10 @@ body {
                         font-weight: bolder;
                         text-align: center;
                         padding: 5px 10px 10px 10px;
-                        color: #d9534f;
+
+                        &.warning {
+                            color: #d9534f;
+                        }
                     }
                 }
             }
@@ -99,6 +103,41 @@ body {
         }
     }
 
+    .refresh-time-block {
+        position: absolute;
+        bottom: 10px;
+        right: 80px;
 
+        width: 240px;
+
+        padding: 5px;
+
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #eee;
+    }
 }
 
+@media (max-width:768px) {
+    body {
+        .body-container {
+            top: 92px;
+
+            .left-block {
+                bottom: unset;
+                width: 100%;
+            }
+
+            .main {
+                left: 0px;
+                top: 332px;
+                bottom: unset;
+                height: 400px;
+            }
+        }
+
+        .refresh-time-block {
+            right: unset;
+            left: 10px;
+        }
+    }
+}

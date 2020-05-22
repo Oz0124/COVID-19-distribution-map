@@ -9,6 +9,7 @@ $(document).ready(function() {
     let mapContainer = body.select('.body-container .main .map');
     let totalInfoBlock = body.select('.total-diagnose-block .diagnose-value');
     let infoSwiperContainer = body.select('.info-swiper-container');
+    let refreshTimeBlock = body.select('.refresh-time-block .time');
     let myChart = echarts.init(mapContainer.node());
     let modalComponent = new OO.Modules.ModalComponent({}, body);
     let isStopRefresh = false;
@@ -40,6 +41,7 @@ $(document).ready(function() {
                 type: 'map',
                 roam: true,
                 mapType: 'taiwan',
+                center: [120.95, 23.76],
                 emphasis: {
                     label: {
                         show: true
@@ -84,6 +86,10 @@ $(document).ready(function() {
             .then(function(result) {
                 let seriesData = [];
                 let total = 0;
+                let currentDate = new Date();
+
+                refreshTimeBlock
+                    .text(d3.timeFormat('%Y/%m/%d %H:%M:%S')(currentDate));
 
                 result.forEach(function(item) {
                     let area = item['縣市'];
@@ -111,10 +117,13 @@ $(document).ready(function() {
 
                     infoSwiperContainer
                         .select('.info-block[nid="' + object.name + '"] .diagnose-value')
+                        .classed('warning', (object.value > 0))
                         .text(object.value);
                 });
 
-                totalInfoBlock.text(total);
+                totalInfoBlock
+                    .classed('warning', (total > 0))
+                    .text(total);
 
                 options.series[0].data = seriesData;
                 myChart.setOption(options);
@@ -130,49 +139,49 @@ $(document).ready(function() {
 
     myChart.showLoading();
 
-    // echarts.registerMap('taiwan', TwGeoJson);
-    // TwGeoJson.features.forEach(function(item) {
-    //     OO.Data.areaInfo.push({
-    //         name: item.properties.name,
-    //         value: 0
-    //     });
-    // });
-
-    // infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
-
-    // refresh(function() {
-    //     myChart.hideLoading();
-
-    //     setInterval(function() {
-    //         if (!isStopRefresh) {
-    //             refresh();
-    //         }
-    //     }, 10000);
-    // });
-
-    OO.Service.getTaiwanGeojson()
-        .then(function(geoJson) {
-            echarts.registerMap('taiwan', geoJson);
-
-            geoJson.features.forEach(function(item) {
-                OO.Data.areaInfo.push({
-                    name: item.properties.name,
-                    value: 0
-                });
-            });
-
-            infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
-
-            refresh(function() {
-                myChart.hideLoading();
-
-                setInterval(function() {
-                    if (!isStopRefresh) {
-                        refresh();
-                    }
-                }, 10000);
-            });
-        }, function(error) {
-            modalComponent.show('Error', 'Ajax request error!');
+    echarts.registerMap('taiwan', TwGeoJson);
+    TwGeoJson.features.forEach(function(item) {
+        OO.Data.areaInfo.push({
+            name: item.properties.name,
+            value: 0
         });
+    });
+
+    infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
+
+    refresh(function() {
+        myChart.hideLoading();
+
+        setInterval(function() {
+            if (!isStopRefresh) {
+                refresh();
+            }
+        }, 10000);
+    });
+
+    // OO.Service.getTaiwanGeojson()
+    //     .then(function(geoJson) {
+    //         echarts.registerMap('taiwan', geoJson);
+
+    //         geoJson.features.forEach(function(item) {
+    //             OO.Data.areaInfo.push({
+    //                 name: item.properties.name,
+    //                 value: 0
+    //             });
+    //         });
+
+    //         infoSwiperInit(infoSwiperContainer, OO.Data.areaInfo);
+
+    //         refresh(function() {
+    //             myChart.hideLoading();
+
+    //             setInterval(function() {
+    //                 if (!isStopRefresh) {
+    //                     refresh();
+    //                 }
+    //             }, 10000);
+    //         });
+    //     }, function(error) {
+    //         modalComponent.show('Error', 'Ajax request error!');
+    //     });
 });
