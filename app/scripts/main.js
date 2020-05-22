@@ -166,6 +166,10 @@ $(document).ready(function() {
         }, 5000);
     });
 
+    window.onresize = function(event) {
+        myChart.resize();
+    };
+
     // OO.Service.getTaiwanGeojson()
     //     .then(function(geoJson) {
     //         echarts.registerMap('taiwan', geoJson);
