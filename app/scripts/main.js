@@ -89,6 +89,7 @@ $(document).ready(function() {
                 let total = 0;
                 let currentDate = new Date();
                 let currentOptions = myChart.getOption();
+                console.log(JSON.parse(result.contents));
 
                 try {
                     result = JSON.parse(result.contents);
@@ -97,6 +98,8 @@ $(document).ready(function() {
                     isStopRefresh = true;
                     modalComponent.show('Error', 'Ajax request error!');
                 }
+
+
 
                 refreshTimeBlock
                     .text(d3.timeFormat('%Y/%m/%d %H:%M:%S')(currentDate));
@@ -135,6 +138,7 @@ $(document).ready(function() {
                     .classed('warning', (total > 0))
                     .text(total);
 
+                options.visualMap.max = (total > 500) ? (Math.ceil(total / 1000) * 1000) : 500;
                 options.series[0].data = seriesData;
 
                 if (currentOptions) {
