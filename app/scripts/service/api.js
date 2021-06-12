@@ -13,7 +13,7 @@ OO.Service = OO.Service || {};
 
     OO.Service.getCovid19Data = function(data) {
         return $.ajax({
-            url: 'https://cors-anywhere.herokuapp.com/http://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.json',
+            url: 'https://api.allorigins.win/get?url=http://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.json',
             type: 'GET',
             data: data
         });

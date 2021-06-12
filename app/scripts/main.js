@@ -90,6 +90,14 @@ $(document).ready(function() {
                 let currentDate = new Date();
                 let currentOptions = myChart.getOption();
 
+                try {
+                    result = JSON.parse(result.contents);
+                }
+                catch(e) {
+                    isStopRefresh = true;
+                    modalComponent.show('Error', 'Ajax request error!');
+                }
+
                 refreshTimeBlock
                     .text(d3.timeFormat('%Y/%m/%d %H:%M:%S')(currentDate));
 
